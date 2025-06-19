@@ -1,9 +1,21 @@
 <?php
-$query = mysqli_query($config, "SELECT users.name, transactions.* FROM transactions
+$query = mysqli_query($config, "SELECT users.name AS name, transactions.* FROM transactions
 LEFT JOIN users ON users.id = transactions.id_user 
 ORDER BY id DESC");
 // 12345, 54321
 $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
+if(isset($_GET['delete'])) {
+    $idDel = $_GET['delete'];
+
+    $del = mysqli_query($config, "DELETE FROM transactions WHERE id ='$idDel'");
+    if($del) {
+        header("location:?page=pos");
+        exit();
+    }
+}
+
+
 ?>
 
 <div class="row">
@@ -21,24 +33,23 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                 <th>No</th>
                                 <th>No Transaction</th>
                                 <th>Cashier Name</th>
-                                <th>Instructor</th>
                                 <th>Sub Total (Rp)</th>
                                 <th>Action</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $i = 1;
+                            <?php
                             foreach ($rows as $key => $data): ?>
+                                <?php   ?>
                                 <tr>
-                                    <td><?php echo $index += 1; ?></td>
-                                    <td><?php $data['no_transaction'] ?></td>
-                                    <td><?php $data['name'] ?></td>
-                                    <td><?php "Rp" . $data['subtotal'] ?></td>
+                                    <td><?php echo $key += 1; ?></td>
+                                    <td><?php echo $data['no_transaction'] ?></td>
+                                    <td><?php echo $data['name'] ?></td>
+                                    <td><?php echo "Rp" . $data['sub_total'] ?></td>
                                     <td>
-                                        <a href="?page=tambah-pos&print=<?php echo $data['id'] ?>" class="btn btn-primary btn-sm">Print</a>
+                                        <a href="?page=print-pos&print=<?php echo $data['id'] ?>" class="btn btn-primary btn-sm">Print</a>
                                         <a onclick="return confirm('Are you sure wanna delete this data??')"
-                                            href="?page=tambah-pos&delete=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+                                            href="?page=pos&delete=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach ?>

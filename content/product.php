@@ -9,7 +9,7 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Data Instruktur</h5>
+                <h5 class="card-title">Data Product</h5>
                 <div class="mb-3" align="right">
                     <a href="?page=tambah-product" class="btn btn-primary">Add Product</a>
                 </div>
